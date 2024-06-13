@@ -27,7 +27,7 @@ jobs:
         with:
           yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
           bucket: sentry-alert-telegram-message-proxy
-          folder-id: ''
+          folder-id: ${{ secrets.YC_FOLDER_ID }}
           function-name: sentry-alert-telegram-message-proxy
           runtime: golang121
           memory: 128Mb
