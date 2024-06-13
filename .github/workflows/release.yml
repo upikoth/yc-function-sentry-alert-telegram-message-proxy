@@ -34,8 +34,6 @@ jobs:
           entrypoint: main.Handler
           include: |
             main.go
-          tags: |
-            ${{ github.sha }}
           environment: |
             NOTIFICATIONS_TELEGRAM_TOKEN=${{ secrets.NOTIFICATIONS_TELEGRAM_TOKEN }}
             NOTIFICATIONS_TELEGRAM_TO=${{ secrets.NOTIFICATIONS_TELEGRAM_TO }}
