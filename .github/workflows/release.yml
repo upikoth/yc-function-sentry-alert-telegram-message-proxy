@@ -34,6 +34,8 @@ jobs:
           entrypoint: main.Handler
           include: |
             main.go
+            go.mod
+            go.sum
           environment: |
             NOTIFICATIONS_TELEGRAM_TOKEN=${{ secrets.NOTIFICATIONS_TELEGRAM_TOKEN }}
             NOTIFICATIONS_TELEGRAM_TO=${{ secrets.NOTIFICATIONS_TELEGRAM_TO }}
