@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22.2'
+      - uses: actions/checkout@v4
+      - uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.58
+
+  update-function:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: yc-actions/yc-sls-function@v2
+        with:
+          yc-sa-json-credentials: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+          bucket: sentry-alert-telegram-message-proxy
+          folder-id: ''
+          function-name: sentry-alert-telegram-message-proxy
+          runtime: golang121
+          memory: 128Mb
+          entrypoint: main.Handler
+          include: |
+            main.go
+          tags: |
+            ${{ github.sha }}
+          environment: |
+            NOTIFICATIONS_TELEGRAM_TOKEN=${{ secrets.NOTIFICATIONS_TELEGRAM_TOKEN }}
+            NOTIFICATIONS_TELEGRAM_TO=${{ secrets.NOTIFICATIONS_TELEGRAM_TO }}
