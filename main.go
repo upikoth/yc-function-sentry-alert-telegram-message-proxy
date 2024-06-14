@@ -48,9 +48,9 @@ func Handler(ctx context.Context, req json.RawMessage) (*Response, error) {
 		ChatID: config.TelegramChatID,
 		Text: fmt.Sprintf(
 			"%s\n\n%s\n%s\n\n%s",
-			requestData.Data.Title,
-			requestData.Data.Text,
 			requestData.Action,
+			requestData.Data.Event.Title,
+			requestData.Data.Event.Message,
 			requestData.Data.Event.Url,
 		),
 	})
@@ -106,10 +106,10 @@ type Request struct {
 type RequestData struct {
 	Action string `json:"action"`
 	Data   struct {
-		Title string `json:"description_title"`
-		Text  string `json:"description_text"`
 		Event struct {
-			Url string `json:"web_url"`
+			Title   string `json:"title"`
+			Message string `json:"message"`
+			Url     string `json:"web_url"`
 		} `json:"event"`
 	} `json:"data"`
 }
