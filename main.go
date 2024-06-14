@@ -44,12 +44,18 @@ func Handler(ctx context.Context, req json.RawMessage) (*Response, error) {
 		return nil, err
 	}
 
+	title := requestData.Data.Event.Title
+
+	if title == "" {
+		title = requestData.Data.Issue.Title
+	}
+
 	jsonData, err := json.Marshal(RequestToTelegram{
 		ChatID: config.TelegramChatID,
 		Text: fmt.Sprintf(
 			"%s\n\n%s\n%s\n\n%s",
 			requestData.Action,
-			requestData.Data.Event.Title,
+			title,
 			requestData.Data.Event.Message,
 			requestData.Data.Event.Url,
 		),
@@ -106,6 +112,9 @@ type Request struct {
 type RequestData struct {
 	Action string `json:"action"`
 	Data   struct {
+		Issue struct {
+			Title string `json:"title"`
+		} `json:"issue"`
 		Event struct {
 			Title   string `json:"title"`
 			Message string `json:"message"`
